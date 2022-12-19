@@ -50,7 +50,7 @@ class ImageCommand extends BaseCommand {
   constructor(interaction: ChatInputCommandInteraction) {
     super(interaction);
 
-    this.cooldown = 60;
+    this.cooldown = 5;
   }
 
   private setRequestOptions(): GenerationConfig {
