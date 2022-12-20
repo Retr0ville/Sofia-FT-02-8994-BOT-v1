@@ -1,21 +1,36 @@
-FROM node:16.17
+FROM debian:bullseye as builder
 
-ENV USER=imagebot
+ARG NODE_VERSION=16.13.1
 
-RUN apt-get update && \
-    apt-get install -y python3 build-essential && \
-    apt-get purge -y --auto-remove
+RUN apt-get update; apt install -y curl
+RUN curl https://get.volta.sh | bash
+ENV VOLTA_HOME /root/.volta
+ENV PATH /root/.volta/bin:$PATH
+RUN volta install node@${NODE_VERSION}
 
-RUN groupadd -r ${USER} && \
-    useradd --create-home --home /home/imagebot -r -g ${USER} ${USER}
+#######################################################################
 
-USER ${USER}
-WORKDIR /home/imagebot
+RUN mkdir /app
+WORKDIR /app
 
-COPY --chown=${USER}:${USER} package*.json ./
-RUN npm install --omit=dev
-VOLUME [ "/home/imagebot" ]
+# NPM will not install any package listed in "devDependencies" when NODE_ENV is set to "production",
+# to install all modules: "npm install --production=false".
+# Ref: https://docs.npmjs.com/cli/v9/commands/npm-install#description
 
-COPY --chown=${USER}:${USER}  . .
+ENV NODE_ENV production
 
-ENTRYPOINT [ "npm", "run", "prod" ]
+COPY . .
+
+RUN npm install && npm run build
+FROM debian:bullseye
+
+LABEL fly_launch_runtime="nodejs"
+
+COPY --from=builder /root/.volta /root/.volta
+COPY --from=builder /app /app
+
+WORKDIR /app
+ENV NODE_ENV production
+ENV PATH /root/.volta/bin:$PATH
+
+CMD [ "npm", "run", "start" ]

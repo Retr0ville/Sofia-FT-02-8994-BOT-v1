@@ -4,13 +4,12 @@
   "description": "a simple Discord bot for generating images using OpenAIs DALL·E 2 image generation API.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build",
+    "build": "npm run deploy-commands",
     "lint": "eslint . --ext .ts",
     "test": "jest tests/ --runInBand",
     "prettier-format": "prettier ./src/**/*.ts tests/*.ts --write",
     "prettier-check": "prettier ./src/**/*.ts tests/*.ts --check",
     "start": "ts-node src/bot.ts",
-    "prod": "npm run deploy-commands && npm run build && node ./dist/bot.js",
     "deploy-commands": "ts-node src/utils/deploy_commands.ts"
   },
   "author": "Kalle Perälä",

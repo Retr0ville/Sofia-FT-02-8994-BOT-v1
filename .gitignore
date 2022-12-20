@@ -3,3 +3,5 @@ node_modules/
 !.env_template
 dist/
 coverage/
+wintun.dll
+flyctl.exe
