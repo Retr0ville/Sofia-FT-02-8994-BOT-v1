@@ -23,6 +23,7 @@ class InteractionCreate extends BaseEvent {
 
       const CommandObj = new Command(this.interaction);
       await CommandObj.execute();
+      console.log(`${this.interaction.commandName} executes succesfully`);
     } catch (error) {
       console.log(`[ERR] Error when executing ${this.interaction.commandName}`);
     }

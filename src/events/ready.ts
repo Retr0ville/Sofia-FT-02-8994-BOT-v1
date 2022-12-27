@@ -14,8 +14,9 @@ class Ready extends BaseEvent {
     try {
       this.client = client;
       const servers = this.client.guilds.cache.size;
-      console.log(`Sofie FT-02 is running on ${servers} servers`);
       this.client.user.setActivity('Generating images using DALL·E 2');
+      console.log(`Sofie FT-02 is running on ${servers} servers`);
+      return
     } catch (error) {
       console.log(`[ERR] Error when executing Ready event`);
     }

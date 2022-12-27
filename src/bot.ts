@@ -28,7 +28,7 @@ class Bot {
 }
 
 export default function init() {
-  console.log('Staring Sofia FT-02...');
+  console.log('Starting Sofia FT-02...');
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
   const token = process.env.DISCORD_TOKEN;
   const bot = new Bot(client, token);
